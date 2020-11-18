@@ -35,7 +35,7 @@
  *
  * Advanced settings can be found in Configuration_adv.h
  */
-#define CONFIGURATION_H_VERSION 020008
+#define CONFIGURATION_H_VERSION 020007
 
 //===========================================================================
 //============================= Getting Started =============================
@@ -524,7 +524,7 @@
  * heater. If your configuration is significantly different than this and you don't understand
  * the issues involved, don't use bed PID until someone else verifies that your hardware works.
  */
-#define PIDTEMPBED
+//#define PIDTEMPBED
 
 //#define BED_LIMIT_SWITCHING
 
@@ -629,7 +629,7 @@
 //#define USE_ZMAX_PLUG
 
 // Enable pullup for all endstops to prevent a floating state
-//#define ENDSTOPPULLUPS
+#define ENDSTOPPULLUPS
 #if DISABLED(ENDSTOPPULLUPS)
   // Disable ENDSTOPPULLUPS to set pullups individually
   //#define ENDSTOPPULLUP_XMAX
@@ -638,7 +638,7 @@
   //#define ENDSTOPPULLUP_XMIN
   //#define ENDSTOPPULLUP_YMIN
   //#define ENDSTOPPULLUP_ZMIN
-  #define ENDSTOPPULLUP_ZMIN_PROBE
+  //#define ENDSTOPPULLUP_ZMIN_PROBE
 #endif
 
 // Enable pulldown for all endstops to prevent a floating state
@@ -661,8 +661,8 @@
 #define X_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
 #define Z_MAX_ENDSTOP_INVERTING false // Set to true to invert the logic of the endstop.
-// BLTOUCH specific setting
-#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // Set to true to invert the logic of the probe.
+
 /**
  * Stepper Drivers
  *
@@ -842,7 +842,7 @@
  * The probe replaces the Z-MIN endstop and is used for Z homing.
  * (Automatically enables USE_PROBE_FOR_Z_HOMING.)
  */
-//#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
+#define Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN
 
 // Force the use of the probe for Z-axis homing
 //#define USE_PROBE_FOR_Z_HOMING
@@ -987,7 +987,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -37.75, -0.6, 0 }
+#define NOZZLE_TO_PROBE_OFFSET { 10, 10, 0 }
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -1082,7 +1082,7 @@
 // @section extruder
 
 #define DISABLE_E false             // Disable the extruder when not stepping
-//#define DISABLE_INACTIVE_EXTRUDER   // Keep only the active extruder enabled
+#define DISABLE_INACTIVE_EXTRUDER   // Keep only the active extruder enabled
 
 // @section machine
 
@@ -1243,7 +1243,7 @@
  * Normally G28 leaves leveling disabled on completion. Enable
  * this option to have G28 restore the prior leveling state.
  */
-#define RESTORE_LEVELING_AFTER_G28
+//#define RESTORE_LEVELING_AFTER_G28
 
 /**
  * Enable detailed logging of G28, G29, M48, etc.
@@ -1267,7 +1267,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #define G26_MESH_VALIDATION
+  //#define G26_MESH_VALIDATION
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for the G26 Mesh Validation Tool.
@@ -2206,47 +2206,43 @@
 //=============================== Graphical TFTs ==============================
 //=============================================================================
 
-/**
- * TFT Type - Select your Display type
- *
- * Available options are:
- *   MKS_TS35_V2_0,
- *   MKS_ROBIN_TFT24, MKS_ROBIN_TFT28, MKS_ROBIN_TFT32, MKS_ROBIN_TFT35,
- *   MKS_ROBIN_TFT43, MKS_ROBIN_TFT_V1_1R
- *   TFT_TRONXY_X5SA, ANYCUBIC_TFT35, LONGER_LK_TFT28
- *   TFT_GENERIC
- *
- * For TFT_GENERIC, you need to configure these 3 options:
- *   Driver:     TFT_DRIVER
- *               Current Drivers are: AUTO, ST7735, ST7789, ST7796, R61505, ILI9328, ILI9341, ILI9488
- *   Resolution: TFT_WIDTH and TFT_HEIGHT
- *   Interface:  TFT_INTERFACE_FSMC or TFT_INTERFACE_SPI
- */
-//#define TFT_GENERIC
+//
+// TFT display with optional touch screen
+// Color Marlin UI with standard menu system
+//
+//#define TFT_320x240
+//#define TFT_320x240_SPI
+//#define TFT_480x320
+//#define TFT_480x320_SPI
 
-/**
- * TFT UI - User Interface Selection. Enable one of the following options:
- *
- *   TFT_CLASSIC_UI - Emulated DOGM - 128x64 Upscaled
- *   TFT_COLOR_UI   - Marlin Default Menus, Touch Friendly, using full TFT capabilities
- *   TFT_LVGL_UI    - A Modern UI using LVGL
- *
- *   For LVGL_UI also copy the 'assets' folder from the build directory to the
- *   root of your SD card, together with the compiled firmware.
- */
-//#define TFT_CLASSIC_UI
-//#define TFT_COLOR_UI
-//#define TFT_LVGL_UI
+//
+// Skip autodetect and force specific TFT driver
+// Mandatory for SPI screens with no MISO line
+// Available drivers are: ST7735, ST7789, ST7796, R61505, ILI9328, ILI9341, ILI9488
+//
+//#define TFT_DRIVER AUTO
 
-/**
- * TFT Rotation. Set to one of the following values:
- *
- *   TFT_ROTATE_90,  TFT_ROTATE_90_MIRROR_X,  TFT_ROTATE_90_MIRROR_Y,
- *   TFT_ROTATE_180, TFT_ROTATE_180_MIRROR_X, TFT_ROTATE_180_MIRROR_Y,
- *   TFT_ROTATE_270, TFT_ROTATE_270_MIRROR_X, TFT_ROTATE_270_MIRROR_Y,
- *   TFT_MIRROR_X, TFT_MIRROR_Y, TFT_NO_ROTATION
- */
-//#define TFT_ROTATION TFT_NO_ROTATION
+//
+// SPI display (MKS Robin Nano V2.0, MKS Gen L V2.0)
+// Upscaled 128x64 Marlin UI
+//
+//#define SPI_GRAPHICAL_TFT
+
+//
+// FSMC display (MKS Robin, Alfawise U20, JGAurora A5S, REXYZ A1, etc.)
+// Upscaled 128x64 Marlin UI
+//
+//#define FSMC_GRAPHICAL_TFT
+
+//
+// TFT LVGL UI
+//
+// Using default MKS icons and fonts from: https://git.io/JJvzK
+// Just copy the 'assets' folder from the build directory to the
+// root of your SD card, together with the compiled firmware.
+//
+//#define TFT_LVGL_UI_FSMC  // Robin nano v1.2 uses FSMC
+//#define TFT_LVGL_UI_SPI   // Robin nano v2.0 uses SPI
 
 //=============================================================================
 //============================  Other Controllers  ============================
